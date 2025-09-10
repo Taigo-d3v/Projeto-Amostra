@@ -1,10 +1,12 @@
 package Taigo_D3v.Projeto.Amostra.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
@@ -22,8 +24,12 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> endereco;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<Telefone> telefone;
+    @ElementCollection(fetch = FetchType.LAZY) //"carregamento preguiçoso", não carrega a lista imediatamente
+    @CollectionTable(name = "cliente_telefones", // Define o nome da nova tabela que será criada.
+            joinColumns = @JoinColumn(name = "cliente_id")) // Define a FK Key.
+    @Column(name = "numero") // Nome da coluna na tabela 'cliente_telefones'
+    private List<Telefone> telefone = new ArrayList<>();
+
 
     //Construtores
     public Cliente() {
@@ -78,5 +84,13 @@ public class Cliente {
 
     public void setTipo(TipoCliente tipo) {
         this.tipo = tipo;
+    }
+
+    public List<Telefone> getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(List<Telefone> telefone) {
+        this.telefone = telefone;
     }
 }

@@ -38,11 +38,11 @@ public class CidadeService {
 		return cidadeRepository.findAll();
 	}
 	
-	public Cidade update(Integer id, Cidade cliente) {
+	public Cidade update(Integer id, Cidade cidade) {
 		
 		Cidade cidadeExistente = findById(id);
 		
-		cidadeExistente.setNome(cidadeExistente.getNome());
+		cidadeExistente.setNome(cidade.getNome());
 		
 		return cidadeRepository.save(cidadeExistente);
 	}

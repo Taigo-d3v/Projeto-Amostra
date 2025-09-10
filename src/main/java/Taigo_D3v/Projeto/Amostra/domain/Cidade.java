@@ -5,47 +5,58 @@ import jakarta.persistence.*;
 @Entity
 public class Cidade {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	String nome;
-	
-	@ManyToOne
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String nome;
+
+    @OneToOne(mappedBy = "cidade")
+    private Endereco endereco;
+
+    @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;
 
-	//Construtores
-	public Cidade() {
-		
-	}
-	
-	public Cidade(String nome) {
-		this.nome = nome;
-	}
+    //Construtores
+    public Cidade() {
 
-	//Getters e Setters
-	public Integer getId() {
-		return id;
-	}
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Cidade(String nome) {
+        this.nome = nome;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    //Getters e Setters
+    public Integer getId() {
+        return id;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Estado getEstado() {
-		return estado;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 }

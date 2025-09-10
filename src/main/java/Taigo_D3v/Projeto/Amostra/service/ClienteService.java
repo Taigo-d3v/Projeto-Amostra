@@ -3,6 +3,7 @@ package Taigo_D3v.Projeto.Amostra.service;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,16 +39,28 @@ public class ClienteService {
 	public List<Cliente> findAll(){
 		return clienteRepository.findAll();
 	}
-	
-	public Cliente update(Integer id, Cliente cliente) {
-		
+
+    @Transactional
+	public Cliente update(Integer id, Cliente clienteComNovosDados) {
+
+        //1. procura o cliente existente
 		Cliente clienteExistente = findById(id);
-		
-		clienteExistente.setCpfOuCnpj(cliente.getCpfOuCnpj());
-		clienteExistente.setEmail(cliente.getEmail());
-		clienteExistente.setNome(cliente.getNome());
-		clienteExistente.setTipo(cliente.getTipo());
-		
+
+
+        //2. atualiza os dados simple de cliente
+		clienteExistente.setCpfOuCnpj(clienteComNovosDados.getCpfOuCnpj());
+		clienteExistente.setEmail(clienteComNovosDados.getEmail());
+		clienteExistente.setNome(clienteComNovosDados.getNome());
+		clienteExistente.setTipo(clienteComNovosDados.getTipo());
+
+        //3. limpa a lista de telefone antiga
+        clienteExistente.getTelefone().clear();
+
+        //4. Adiciona todos os telefones da requisição na lista do cliente existente
+        if(clienteComNovosDados.getTelefone() != null){
+            clienteExistente.getTelefone().addAll(clienteComNovosDados.getTelefone());
+        }
+		//5. salva o cliente. O JPA irá sincronizar todas as midanças no banco.
 		return clienteRepository.save(clienteExistente);
 	}
 	

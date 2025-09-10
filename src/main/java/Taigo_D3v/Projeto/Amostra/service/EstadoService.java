@@ -42,7 +42,7 @@ public class EstadoService {
 		
 		Estado estadoExistente = findById(id);
 		
-		estadoExistente.setNome(estadoExistente.getNome());
+		estadoExistente.setNome(estado.getNome());
 		
 		return estadoRepository.save(estadoExistente);
 	}
